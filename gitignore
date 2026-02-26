@@ -1,0 +1,17 @@
+# Mac system files
+.DS_Store
+
+# Go Binaries (The compiled apps)
+main
+client/client
+gateway/gateway
+
+# Protobuf generated files (Optional - some people keep them, some don't. Keep them for now)
+# *.pb.go
+# *.pb.gw.go
+
+# Docker data (Crucial! Don't upload the actual database files)
+postgres_data/
+
+# Environment files
+.env

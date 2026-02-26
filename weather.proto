@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package weather;
+option go_package = "./pb";
+
+// 1. IMPORT the Google HTTP annotations
+import "google/api/annotations.proto";
+
+message WeatherRequest {
+  string city = 1;
+}
+
+message WeatherResponse {
+  float temperature = 1;
+  string conditions = 2;
+}
+// New Message for writing data
+message UpdateWeatherRequest {
+  string city = 1;
+  float temperature = 2;
+  string conditions = 3;
+}
+
+// Simple response to acknowledge success
+message UpdateResponse {
+  string message = 1;
+}
+service WeatherService {
+  // 2. ANNOTATE the function with a REST URL
+  rpc GetCurrentWeather(WeatherRequest) returns (WeatherResponse) {
+    option (google.api.http) = {
+      get: "/v1/weather/{city}" // This maps the URL to the 'city' field in our message
+    };
+  }
+
+  rpc StreamWeatherUpdates(WeatherRequest) returns (stream WeatherResponse);
+  rpc UpdateWeather(UpdateWeatherRequest) returns (UpdateResponse);
+}
