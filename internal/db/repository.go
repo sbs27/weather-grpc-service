@@ -7,7 +7,13 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// WeatherRepository handles all database operations
+// 1. Define the CONTRACT
+type WeatherStore interface {
+	GetWeatherByCity(ctx context.Context, city string) (*pb.WeatherResponse, error)
+	SaveWeather(ctx context.Context, city string, temp float32, cond string) error
+}
+
+// 2. Ensure your real Repository "satisfies" this contract
 type WeatherRepository struct {
 	Pool *pgxpool.Pool
 }

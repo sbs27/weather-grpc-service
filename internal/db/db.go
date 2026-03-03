@@ -3,14 +3,19 @@ package db
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // ConnectDB initializes a connection pool to PostgreSQL
 func ConnectDB() *pgxpool.Pool {
-	// The Connection String (URL)
-	connStr := "postgres://user:password@localhost:5432/weather_db"
+	// 1. Look for environment variable first (Docker style)
+	// 2. Fall back to localhost (Local development style)
+	connStr := os.Getenv("DB_URL")
+	if connStr == "" {
+		connStr = "postgres://user:password@localhost:5432/weather_db"
+	}
 
 	// Create the Pool
 	config, err := pgxpool.ParseConfig(connStr)
